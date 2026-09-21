@@ -1,26 +1,434 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   CyberPulse Design System — Tailwind v4 CSS-first approach
+   ============================================================ */
+
+/* Define our theme tokens via @theme so Tailwind v4 generates
+   the utility classes (bg-background, text-foreground, etc.) */
+@theme {
+  /* ─── Colors mapped to CSS variables ─── */
+  --color-background:        var(--background);
+  --color-foreground:        var(--foreground);
+  --color-card:              var(--card);
+  --color-card-foreground:   var(--card-foreground);
+  --color-popover:           var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary:           var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:         var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:             var(--muted);
+  --color-muted-foreground:  var(--muted-foreground);
+  --color-accent:            var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive:       var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:            var(--border);
+  --color-input:             var(--input);
+  --color-ring:              var(--ring);
+
+  /* ─── Cyber brand ─── */
+  --color-cyber-cyan:   #00d4ff;
+  --color-cyber-blue:   #0066ff;
+  --color-cyber-purple: #7c3aed;
+  --color-cyber-green:  #00ff88;
+  --color-cyber-red:    #ff3366;
+  --color-cyber-orange: #ff6b35;
+
+  /* ─── Border radius ─── */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ─── Font families ─── */
+  --font-family-sans: "Inter", "system-ui", sans-serif;
+  --font-family-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================================
+   Theme Variables — Light & Dark Modes
+   ============================================================ */
+
+:root,
+:root[data-theme='light'],
+.light {
+  --background:              hsl(210 40% 98%);
+  --foreground:              hsl(222 47% 11%);
+  --card:                    hsl(0 0% 100%);
+  --card-foreground:         hsl(222 47% 11%);
+  --popover:                 hsl(0 0% 100%);
+  --popover-foreground:      hsl(222 47% 11%);
+  --primary:                 hsl(199 89% 48%);
+  --primary-foreground:      hsl(0 0% 100%);
+  --secondary:               hsl(210 40% 96%);
+  --secondary-foreground:    hsl(222 47% 11%);
+  --muted:                   hsl(210 40% 95%);
+  --muted-foreground:        hsl(215 16% 47%);
+  --accent:                  hsl(210 40% 93%);
+  --accent-foreground:       hsl(222 47% 11%);
+  --destructive:             hsl(0 84% 60%);
+  --destructive-foreground:  hsl(0 0% 100%);
+  --border:                  hsl(214 32% 91%);
+  --input:                   hsl(214 32% 91%);
+  --ring:                    hsl(199 89% 48%);
+
+  --glass-bg:                rgba(255, 255, 255, 0.85);
+  --glass-border:            rgba(0, 0, 0, 0.08);
+  --grid-color:              rgba(2, 132, 199, 0.06);
+  --glow-color:              rgba(2, 132, 199, 0.25);
+  --glow-color-subtle:       rgba(2, 132, 199, 0.1);
+  --gradient-text:           linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #7c3aed 100%);
+  --gradient-text-green:     linear-gradient(135deg, #059669 0%, #0284c7 100%);
+
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.dark,
+:root[data-theme='dark'] {
+  --background:              hsl(222 47% 6%);
+  --foreground:              hsl(210 40% 98%);
+  --card:                    hsl(222 47% 9%);
+  --card-foreground:         hsl(210 40% 98%);
+  --popover:                 hsl(222 47% 9%);
+  --popover-foreground:      hsl(210 40% 98%);
+  --primary:                 hsl(197 100% 50%);
+  --primary-foreground:      hsl(222 47% 6%);
+  --secondary:               hsl(217 33% 17%);
+  --secondary-foreground:    hsl(210 40% 98%);
+  --muted:                   hsl(217 33% 17%);
+  --muted-foreground:        hsl(215 20% 65%);
+  --accent:                  hsl(217 33% 17%);
+  --accent-foreground:       hsl(210 40% 98%);
+  --destructive:             hsl(0 62% 50%);
+  --destructive-foreground:  hsl(0 0% 98%);
+  --border:                  hsl(217 33% 17%);
+  --input:                   hsl(217 33% 17%);
+  --ring:                    hsl(197 100% 50%);
+
+  --glass-bg:                rgba(10, 15, 29, 0.85);
+  --glass-border:            rgba(255, 255, 255, 0.08);
+  --grid-color:              rgba(0, 212, 255, 0.03);
+  --glow-color:              rgba(0, 212, 255, 0.35);
+  --glow-color-subtle:       rgba(0, 212, 255, 0.15);
+  --gradient-text:           linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #7c3aed 100%);
+  --gradient-text-green:     linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+
+  color-scheme: dark;
+}
+
+/* ============================================================
+   Base layer — raw CSS, no @apply with custom token names
+   ============================================================ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-family-sans);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-foreground);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--color-muted); }
+  ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-muted-foreground) 30%, transparent); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--color-muted-foreground) 50%, transparent); }
+
+  /* Links */
+  a { color: inherit; text-decoration: none; }
+
+  /* Selection */
+  ::selection {
+    background: color-mix(in srgb, var(--color-primary) 30%, transparent);
+    color: var(--color-foreground);
+  }
+
+  /* Code */
+  pre {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-size: 0.875rem;
+    background: color-mix(in srgb, var(--color-muted) 50%, transparent);
+    border: 1px solid var(--color-border);
+  }
+
+  code {
+    font-family: var(--font-family-mono);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.875em;
+    background: color-mix(in srgb, var(--color-muted) 60%, transparent);
+    color: var(--color-primary);
+  }
+
+  pre code {
+    padding: 0;
+    background: transparent;
+    color: var(--color-foreground);
+  }
+
+  /* Input base */
+  input, textarea, select {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    border-color: var(--color-border);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-muted-foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   Utility classes
+   ============================================================ */
+
+@layer utilities {
+
+  /* Cyber glow */
+  .cyber-glow {
+    box-shadow: 0 0 20px var(--glow-color), 0 0 40px var(--glow-color-subtle);
+  }
+  .cyber-glow-green {
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 0 40px rgba(0, 255, 136, 0.1);
+  }
+  .cyber-glow-red {
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.3), 0 0 40px rgba(255, 51, 102, 0.1);
+  }
+
+  /* Grid background */
+  .cyber-grid {
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Glassmorphism */
+  .glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-green {
+    background: var(--gradient-text-green);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Scan line animation */
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanline::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.6), transparent);
+    animation: scanline 3s linear infinite;
+  }
+
+  /* Terminal cursor */
+  .terminal-cursor::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    color: var(--color-cyber-cyan);
+  }
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+
+@keyframes scanline {
+  0%   { top: -100%; }
+  100% { top: 100%; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-cyber {
+  0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.4); }
+  50%       { box-shadow: 0 0 20px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.4); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@layer utilities {
+  .animate-fade-in        { animation: fade-in 0.4s ease-out; }
+  .animate-slide-in-right { animation: slide-in-right 0.3s ease-out; }
+  .animate-pulse-cyber    { animation: pulse-cyber 2s ease-in-out infinite; }
+}
+
+/* ============================================================
+   Skeleton loading
+   ============================================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 25%,
+    color-mix(in srgb, var(--color-muted-foreground) 20%, transparent) 50%,
+    var(--color-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* ============================================================
+   Article content prose
+   ============================================================ */
+
+.article-content {
+  color: var(--color-foreground);
+  line-height: 1.75;
+}
+
+.article-content h1 { font-size: 2rem; font-weight: 900; margin-top: 2.5rem; margin-bottom: 1rem; }
+.article-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; }
+.article-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+.article-content h4 { font-size: 1.125rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+
+.article-content p { margin-bottom: 1.25rem; line-height: 1.75; }
+
+.article-content ul,
+.article-content ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.article-content ul li { list-style-type: disc; margin-bottom: 0.5rem; }
+.article-content ol li { list-style-type: decimal; margin-bottom: 0.5rem; }
+
+.article-content blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-muted-foreground);
+}
+
+.article-content code {
+  background: color-mix(in srgb, var(--color-muted) 60%, transparent);
+  color: var(--color-primary);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: var(--font-family-mono);
+}
+
+.article-content pre {
+  background: color-mix(in srgb, var(--color-muted) 50%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--color-foreground);
+}
+
+.article-content a { color: var(--color-primary); text-decoration: underline; }
+.article-content a:hover { opacity: 0.8; }
+
+.article-content table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+.article-content th { border: 1px solid var(--color-border); background: var(--color-muted); padding: 0.5rem 1rem; text-align: left; font-weight: 600; }
+.article-content td { border: 1px solid var(--color-border); padding: 0.5rem 1rem; }
+
+.article-content img { border-radius: 0.5rem; margin: 1.5rem 0; max-width: 100%; }
+.article-content hr { border-color: var(--color-border); margin: 2rem 0; }
+
+/* Strong/em */
+.article-content strong { font-weight: 700; }
+.article-content em     { font-style: italic; }
+
+/* ============================================================
+   ProseMirror / TipTap editor
+   ============================================================ */
+
+.ProseMirror {
+  min-height: 400px;
+  outline: none;
+  color: var(--color-foreground);
+  line-height: 1.75;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: var(--color-muted-foreground);
 }
